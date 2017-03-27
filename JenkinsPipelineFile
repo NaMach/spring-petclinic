@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    
+    stages {
+        
+        stage('Git Clone/Pull') {
+            
+            steps {
+                
+                git 'https://github.com/NaMach/spring-petclinic.git'
+                
+            }
+        }
+        
+        stage('Maven Build') {
+            
+            steps {
+                
+                sh 'mvn clean install'
+            }
+        }
+        
+        stage('Publish artifact') {
+            
+            steps {
+                
+                archiveArtifacts 'target/spring-petclinic-*.jar'
+                junit 'target/surefire-reports/*.xml'
+            }
+        }
+    }
+}
